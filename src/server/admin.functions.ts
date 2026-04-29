@@ -18,6 +18,7 @@ export const createItem = createServerFn({ method: "POST" })
         title: z.string().min(1).max(120),
         description: z.string().max(500).default(""),
         emoji: z.string().min(1).max(8).default("🎁"),
+        image_url: z.string().optional().nullable(),
         starting_price: z.number().int().min(1).max(1_000_000),
         min_increment: z.number().int().min(1).max(100_000),
       })
@@ -30,7 +31,7 @@ export const createItem = createServerFn({ method: "POST" })
     if (!auc) throw new Error("Leilão não encontrado.");
     const { data: maxRow } = await supabase
       .from("items")
-      .select('"order"')
+      .select("order")
       .eq("auction_id", auc.id)
       .order("order", { ascending: false })
       .limit(1)
@@ -44,6 +45,7 @@ export const createItem = createServerFn({ method: "POST" })
         title: data.title,
         description: data.description,
         emoji: data.emoji,
+        image_url: data.image_url ?? null,
         starting_price: data.starting_price,
         min_increment: data.min_increment,
         status: "PENDING",
@@ -62,6 +64,7 @@ export const updateItem = createServerFn({ method: "POST" })
         title: z.string().min(1).max(120).optional(),
         description: z.string().max(500).optional(),
         emoji: z.string().min(1).max(8).optional(),
+        image_url: z.string().optional().nullable(),
         starting_price: z.number().int().min(1).optional(),
         min_increment: z.number().int().min(1).optional(),
       })
@@ -148,7 +151,7 @@ export const advanceItem = createServerFn({ method: "POST" })
     // find next pending
     const { data: current } = await supabase
       .from("items")
-      .select('"order"')
+      .select("order")
       .eq("id", auc.current_item_id)
       .single();
     const { data: next } = await supabase

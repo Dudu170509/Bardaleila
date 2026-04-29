@@ -7,6 +7,7 @@ import { UpcomingItems } from "@/components/telao/UpcomingItems";
 import { ArrematedOverlay } from "@/components/telao/ArrematedOverlay";
 import { JoinQR } from "@/components/telao/JoinQR";
 import { useAuctionState } from "@/hooks/useAuctionState";
+import type { Bid, Participant } from "@/lib/auction-types";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/")({
 });
 
 function TelaoPage() {
-  const { auction, items, currentItem, currentBids, topBid, leader, loading } = useAuctionState();
+  const { auction, items, bids, participants, currentItem, currentBids, topBid, leader, loading } = useAuctionState();
   const [joinUrl, setJoinUrl] = useState("");
   const [lastClosed, setLastClosed] = useState<string | null>(null);
   const [showArremate, setShowArremate] = useState<{
@@ -39,10 +40,20 @@ function TelaoPage() {
     const justClosed = items.find((i) => i.status === "CLOSED" && i.id !== lastClosed && i.winner_bid_id);
     if (!justClosed || !justClosed.winner_bid_id) return;
     setLastClosed(justClosed.id);
-    // tenta achar o lance vencedor
-    // (já temos bids no estado mas filtramos: precisamos achar o bid pelo id)
-    // O hook tem todos os bids carregados.
-  }, [items, lastClosed]);
+    // Acha o lance vencedor pelo id — busca em TODOS os bids (não só currentBids,
+    // pois quando o item fecha o currentBids já aponta pro próximo item)
+    const winnerBid = bids.find((b) => b.id === justClosed.winner_bid_id);
+    if (winnerBid) {
+      const participant = participants.find((p) => p.id === winnerBid.participant_id);
+      setShowArremate({
+        name: participant?.name ?? "Arrematante",
+        avatar: participant?.avatar ?? "🎉",
+        amount: winnerBid.amount,
+      });
+      // Auto-dismiss após 6 segundos
+      setTimeout(() => setShowArremate(null), 6000);
+    }
+  }, [items, lastClosed, bids, participants]);
 
   const upcoming = items.filter((i) => i.status === "PENDING");
   const leaderName = leader?.name ?? "—";
@@ -104,7 +115,7 @@ function TelaoPage() {
       </header>
 
       {/* Grid principal — pt-24 e pb-36 evitam sobreposição com header/footer */}
-      <div className="grid h-full grid-cols-[1fr_1fr] gap-0 pt-24 pb-36">
+      <div className="grid h-full grid-cols-1 gap-0 pt-24 pb-36 lg:grid-cols-[1fr_1fr]">
         <div className="relative">
           <ItemStage item={currentItem} />
         </div>

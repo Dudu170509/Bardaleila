@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useServerFn } from "@tanstack/react-start";
 import { useAuctionState } from "@/hooks/useAuctionState";
@@ -28,13 +28,13 @@ function AdminPage() {
   const verifyFn = useServerFn(verifyAdminPassword);
 
   // tenta restaurar do sessionStorage
-  if (typeof window !== "undefined" && !authed) {
+  useEffect(() => {
     const saved = sessionStorage.getItem("admin_pwd");
-    if (saved && password === "") {
+    if (saved) {
       setPassword(saved);
       setAuthed(true);
     }
-  }
+  }, []);
 
   const tryLogin = async () => {
     setErr(null);
@@ -301,6 +301,7 @@ function ItemFormModal({
   const [title, setTitle] = useState(item?.title ?? "");
   const [description, setDescription] = useState(item?.description ?? "");
   const [emoji, setEmoji] = useState(item?.emoji ?? "🎁");
+  const [imageUrl, setImageUrl] = useState(item?.image_url ?? "");
   const [startingPrice, setStartingPrice] = useState(item?.starting_price ?? 50);
   const [minIncrement, setMinIncrement] = useState(item?.min_increment ?? 5);
   const [busy, setBusy] = useState(false);
@@ -320,6 +321,7 @@ function ItemFormModal({
             title,
             description,
             emoji,
+            image_url: imageUrl || null,
             starting_price: startingPrice,
             min_increment: minIncrement,
           },
@@ -331,6 +333,7 @@ function ItemFormModal({
             title,
             description,
             emoji,
+            image_url: imageUrl || null,
             starting_price: startingPrice,
             min_increment: minIncrement,
           },
@@ -394,6 +397,18 @@ function ItemFormModal({
             placeholder="10 chopps gelados pra mesa..."
             maxLength={500}
             rows={2}
+            className="mt-1 w-full rounded-xl border-2 border-border bg-background px-3 py-2 text-cream outline-none focus:border-lime"
+          />
+        </label>
+
+        <label className="mt-3 block">
+          <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
+            URL da Imagem
+          </span>
+          <input
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="https://exemplo.com/imagem.png"
             className="mt-1 w-full rounded-xl border-2 border-border bg-background px-3 py-2 text-cream outline-none focus:border-lime"
           />
         </label>

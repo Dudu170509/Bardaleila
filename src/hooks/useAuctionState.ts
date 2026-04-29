@@ -57,13 +57,15 @@ export function useAuctionState() {
 }
 
 export function useParticipantSession() {
-  const [me, setMe] = useState<Participant | null>(null);
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem("participant");
-      if (raw) setMe(JSON.parse(raw));
-    } catch {}
-  }, []);
+  const [me, setMe] = useState<Participant | null>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const raw = window.localStorage.getItem("participant");
+        if (raw) return JSON.parse(raw);
+      } catch {}
+    }
+    return null;
+  });
   const save = (p: Participant) => {
     localStorage.setItem("participant", JSON.stringify(p));
     setMe(p);

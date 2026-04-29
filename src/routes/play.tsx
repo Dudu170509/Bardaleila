@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuctionState, useParticipantSession } from "@/hooks/useAuctionState";
 import { formatBRL } from "@/lib/auction-types";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,8 +19,13 @@ function PlayPage() {
   const [submitting, setSubmitting] = useState(false);
   const [toast, setToast] = useState<{ msg: string; kind: "ok" | "err" } | null>(null);
 
+  useEffect(() => {
+    if (!me) {
+      navigate({ to: "/join" });
+    }
+  }, [me, navigate]);
+
   if (!me) {
-    if (typeof window !== "undefined") navigate({ to: "/join" });
     return null;
   }
 
@@ -98,9 +103,15 @@ function PlayPage() {
                 {/* Item card */}
                 <div className="relative overflow-hidden rounded-3xl border-4 border-lime bg-card p-5 shadow-pop">
                   <div className="flex items-start gap-4">
-                    <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-mango text-5xl">
-                      {currentItem.emoji}
-                    </div>
+                    {currentItem.image_url ? (
+                      <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl overflow-hidden bg-card border-2 border-mango">
+                        <img src={currentItem.image_url} alt={currentItem.title} className="h-full w-full object-cover" />
+                      </div>
+                    ) : (
+                      <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-mango text-5xl">
+                        {currentItem.emoji}
+                      </div>
+                    )}
                     <div className="min-w-0 flex-1">
                       <span className="inline-block rounded-md bg-grape px-2 py-0.5 font-mono text-[9px] font-bold uppercase text-cream">
                         Lote {currentItem.order.toString().padStart(2, "0")}
