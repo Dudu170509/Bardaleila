@@ -34,7 +34,7 @@ export function ArrematedOverlay({ show, winner, amount }: Props) {
               {formatBRL(amount)}
             </p>
           </motion.div>
-        </AnimatePresence>
+        </motion.div>
       )}
     </AnimatePresence>
   );
