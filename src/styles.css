@@ -4,18 +4,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Fonts: Fraunces (display serif) + JetBrains Mono (numbers) + Inter fallback */
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=JetBrains+Mono:wght@300;400;500;700&display=swap");
+/* Vibe de bar: display ousada (Bricolage) + handwritten (Caveat) + mono divertido */
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap");
 
 @theme inline {
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --font-sans: "Fraunces", ui-serif, Georgia, serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-hand: "Caveat", cursive;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-sans: "Bricolage Grotesque", system-ui, sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -36,62 +37,64 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-gold: var(--gold);
-  --color-gold-deep: var(--gold-deep);
-  --color-gold-soft: var(--gold-soft);
-  --color-ivory: var(--ivory);
-  --color-ember: var(--ember);
 
-  --shadow-gold-glow: 0 0 60px -10px var(--gold), 0 0 120px -40px var(--gold-deep);
-  --shadow-deep: 0 30px 80px -20px rgb(0 0 0 / 0.8);
+  --color-cherry: var(--cherry);
+  --color-lime: var(--lime);
+  --color-mango: var(--mango);
+  --color-grape: var(--grape);
+  --color-cream: var(--cream);
+
+  --shadow-pop: 8px 8px 0 0 var(--cherry);
+  --shadow-pop-lime: 8px 8px 0 0 var(--lime);
+  --shadow-pop-grape: 8px 8px 0 0 var(--grape);
+  --shadow-glow-mango: 0 0 80px -10px var(--mango), 0 0 40px -5px var(--mango);
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 1rem;
 
-  /* Art-deco noturno: ônix profundo + dourado champanhe + marfim */
-  --background: oklch(0.12 0.012 60);
-  --foreground: oklch(0.94 0.02 80);
+  /* Bar/festa: roxo profundo de fundo + cores neon vibrantes */
+  --background: oklch(0.20 0.08 310);
+  --foreground: oklch(0.97 0.02 80);
 
-  --card: oklch(0.16 0.014 60);
-  --card-foreground: oklch(0.94 0.02 80);
+  --card: oklch(0.26 0.10 310);
+  --card-foreground: oklch(0.97 0.02 80);
 
-  --popover: oklch(0.16 0.014 60);
-  --popover-foreground: oklch(0.94 0.02 80);
+  --popover: oklch(0.26 0.10 310);
+  --popover-foreground: oklch(0.97 0.02 80);
 
-  --primary: oklch(0.78 0.13 80); /* dourado champanhe */
-  --primary-foreground: oklch(0.12 0.012 60);
+  --primary: oklch(0.78 0.21 50); /* manga vibrante */
+  --primary-foreground: oklch(0.20 0.08 310);
 
-  --secondary: oklch(0.22 0.015 60);
-  --secondary-foreground: oklch(0.94 0.02 80);
+  --secondary: oklch(0.32 0.10 310);
+  --secondary-foreground: oklch(0.97 0.02 80);
 
-  --muted: oklch(0.20 0.012 60);
-  --muted-foreground: oklch(0.65 0.025 75);
+  --muted: oklch(0.30 0.08 310);
+  --muted-foreground: oklch(0.78 0.05 310);
 
-  --accent: oklch(0.78 0.13 80);
-  --accent-foreground: oklch(0.12 0.012 60);
+  --accent: oklch(0.85 0.22 130); /* lima */
+  --accent-foreground: oklch(0.20 0.08 310);
 
-  --destructive: oklch(0.58 0.22 25);
+  --destructive: oklch(0.65 0.25 25);
   --destructive-foreground: oklch(0.98 0.01 80);
 
-  --border: oklch(0.30 0.03 75 / 0.4);
-  --input: oklch(0.25 0.02 70);
-  --ring: oklch(0.78 0.13 80);
+  --border: oklch(0.45 0.10 310);
+  --input: oklch(0.32 0.10 310);
+  --ring: oklch(0.78 0.21 50);
 
-  /* Tokens semânticos extras */
-  --gold: oklch(0.82 0.14 82);
-  --gold-deep: oklch(0.65 0.16 60);
-  --gold-soft: oklch(0.88 0.08 85);
-  --ivory: oklch(0.96 0.018 85);
-  --ember: oklch(0.55 0.22 35);
+  /* Paleta festa */
+  --cherry: oklch(0.65 0.26 25);   /* vermelho cereja */
+  --lime: oklch(0.88 0.22 130);    /* verde lima neon */
+  --mango: oklch(0.82 0.20 70);    /* amarelo manga */
+  --grape: oklch(0.55 0.24 320);   /* roxo uva */
+  --cream: oklch(0.97 0.04 90);    /* creme */
 
-  --gradient-gold: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold) 50%, var(--gold-soft) 100%);
-  --gradient-stage: radial-gradient(ellipse at center top, oklch(0.20 0.02 60) 0%, oklch(0.08 0.008 60) 70%);
-  --gradient-vignette: radial-gradient(ellipse at center, transparent 40%, oklch(0.06 0.005 60 / 0.85) 100%);
+  --gradient-party: linear-gradient(135deg, var(--cherry) 0%, var(--mango) 50%, var(--lime) 100%);
+  --gradient-night: radial-gradient(ellipse at 30% 20%, oklch(0.30 0.18 320) 0%, oklch(0.16 0.08 310) 60%, oklch(0.10 0.05 300) 100%);
 }
 
 .dark {
-  /* Same tokens — telão é sempre dark */
+  /* mesmo tema */
 }
 
 @layer base {
@@ -100,44 +103,62 @@
   }
 
   body {
-    background: var(--gradient-stage);
+    background: var(--gradient-night);
     color: var(--color-foreground);
     font-family: var(--font-display);
-    font-feature-settings: "ss01", "ss02", "liga";
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
   }
 }
 
 @layer utilities {
-  .text-gold-gradient {
-    background: var(--gradient-gold);
+  .text-party-gradient {
+    background: var(--gradient-party);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
 
-  .border-deco {
-    position: relative;
+  .neon-glow-mango {
+    text-shadow:
+      0 0 12px oklch(0.82 0.20 70 / 0.8),
+      0 0 32px oklch(0.82 0.20 70 / 0.5),
+      0 0 60px oklch(0.82 0.20 70 / 0.3);
   }
-  .border-deco::before,
-  .border-deco::after {
-    content: "";
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--gold);
-    opacity: 0.6;
-  }
-  .border-deco::before { top: 0; left: 0; border-right: none; border-bottom: none; }
-  .border-deco::after { bottom: 0; right: 0; border-left: none; border-top: none; }
 
-  .vignette::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--gradient-vignette);
-    pointer-events: none;
+  .neon-glow-lime {
+    text-shadow:
+      0 0 12px oklch(0.88 0.22 130 / 0.8),
+      0 0 32px oklch(0.88 0.22 130 / 0.5);
   }
+
+  .sticker {
+    transform: rotate(-2deg);
+    transition: transform 0.2s ease;
+  }
+  .sticker:hover { transform: rotate(0deg) scale(1.02); }
+
+  .dotted-bg {
+    background-image: radial-gradient(oklch(0.78 0.21 50 / 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  @keyframes wobble {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+  .animate-wobble { animation: wobble 3s ease-in-out infinite; }
+
+  @keyframes float-up {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .animate-spin-slow { animation: spin-slow 20s linear infinite; }
 }

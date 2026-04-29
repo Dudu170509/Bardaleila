@@ -2,27 +2,21 @@ import type { AuctionItem } from "@/lib/auction-mock";
 
 export function UpcomingItems({ items }: { items: AuctionItem[] }) {
   return (
-    <div className="flex items-center gap-6">
-      <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-        A seguir
-      </span>
-      <div className="flex gap-4">
-        {items.map((it) => (
+    <div className="flex items-center gap-4">
+      <span className="font-hand text-2xl text-mango">próximos →</span>
+      <div className="flex gap-3">
+        {items.map((it, idx) => (
           <div
             key={it.id}
-            className="flex items-center gap-3 rounded-sm border border-border/40 bg-card/40 px-3 py-2 backdrop-blur"
+            className="flex items-center gap-3 rounded-2xl border-2 border-border bg-card/70 px-3 py-2 backdrop-blur"
+            style={{ transform: `rotate(${idx % 2 === 0 ? -1 : 1}deg)` }}
           >
-            <img
-              src={it.imageUrl}
-              alt=""
-              className="h-10 w-10 rounded-sm object-cover opacity-70"
-              loading="lazy"
-            />
+            <span className="text-2xl">{it.emoji}</span>
             <div>
-              <p className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+              <p className="font-mono text-[9px] font-bold uppercase text-lime">
                 Lote {it.order.toString().padStart(2, "0")}
               </p>
-              <p className="font-display text-sm text-ivory/90">{it.title}</p>
+              <p className="font-display text-sm font-bold text-cream">{it.title}</p>
             </div>
           </div>
         ))}

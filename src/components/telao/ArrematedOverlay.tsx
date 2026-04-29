@@ -7,6 +7,9 @@ type Props = {
   amount: number;
 };
 
+const CONFETTI = Array.from({ length: 40 }, (_, i) => i);
+const COLORS = ["var(--cherry)", "var(--lime)", "var(--mango)", "var(--grape)", "var(--cream)"];
+
 export function ArrematedOverlay({ show, winner, amount }: Props) {
   return (
     <AnimatePresence>
@@ -15,24 +18,46 @@ export function ArrematedOverlay({ show, winner, amount }: Props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-xl"
+          transition={{ duration: 0.4 }}
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-background/95 backdrop-blur-xl"
         >
+          {/* confete */}
+          {CONFETTI.map((i) => (
+            <span
+              key={i}
+              className="absolute h-3 w-3 rounded-sm"
+              style={{
+                left: `${Math.random() * 100}%`,
+                bottom: "-10%",
+                background: COLORS[i % COLORS.length],
+                animation: `float-up ${2 + Math.random() * 2}s ${Math.random() * 1.5}s ease-out forwards`,
+                transform: `rotate(${Math.random() * 360}deg)`,
+              }}
+            />
+          ))}
+
           <motion.div
-            initial={{ scale: 0.7, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 180, damping: 18, delay: 0.2 }}
+            initial={{ scale: 0.5, rotate: -10 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 180, damping: 14, delay: 0.15 }}
             className="text-center"
           >
-            <p className="font-mono text-sm uppercase tracking-[0.6em] text-gold">
-              ◆ Arrematado ◆
-            </p>
-            <p className="mt-8 font-display text-[clamp(4rem,10vw,9rem)] font-light italic leading-none text-gold-gradient">
+            <motion.p
+              animate={{ rotate: [-3, 3, -3] }}
+              transition={{ duration: 0.6, repeat: Infinity }}
+              className="font-display text-7xl font-extrabold uppercase text-party-gradient"
+            >
+              ARREMATOU!! 🎉
+            </motion.p>
+            <p className="mt-8 font-hand text-8xl text-cream neon-glow-lime">
               {winner}
             </p>
-            <p className="mt-8 font-mono text-3xl text-ivory" style={{ fontVariantNumeric: "tabular-nums" }}>
-              {formatBRL(amount)}
-            </p>
+            <div className="mt-8 inline-block rotate-2 rounded-2xl bg-mango px-8 py-4 shadow-pop">
+              <p className="font-display text-5xl font-extrabold text-background" style={{ fontVariantNumeric: "tabular-nums" }}>
+                {formatBRL(amount)}
+              </p>
+            </div>
+            <p className="mt-6 font-hand text-3xl text-lime">vai pagar agora! 💸</p>
           </motion.div>
         </motion.div>
       )}
