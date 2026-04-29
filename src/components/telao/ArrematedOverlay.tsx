@@ -1,16 +1,20 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { formatBRL } from "@/lib/auction-mock";
+import { formatBRL } from "@/lib/auction-types";
 
-type Props = {
-  show: boolean;
-  winner: string;
-  amount: number;
-};
-
-const CONFETTI = Array.from({ length: 40 }, (_, i) => i);
+const CONFETTI = Array.from({ length: 50 }, (_, i) => i);
 const COLORS = ["var(--cherry)", "var(--lime)", "var(--mango)", "var(--grape)", "var(--cream)"];
 
-export function ArrematedOverlay({ show, winner, amount }: Props) {
+export function ArrematedOverlay({
+  show,
+  winner,
+  avatar,
+  amount,
+}: {
+  show: boolean;
+  winner: string;
+  avatar: string;
+  amount: number;
+}) {
   return (
     <AnimatePresence>
       {show && (
@@ -21,7 +25,6 @@ export function ArrematedOverlay({ show, winner, amount }: Props) {
           transition={{ duration: 0.4 }}
           className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-background/95 backdrop-blur-xl"
         >
-          {/* confete */}
           {CONFETTI.map((i) => (
             <span
               key={i}
@@ -40,24 +43,28 @@ export function ArrematedOverlay({ show, winner, amount }: Props) {
             initial={{ scale: 0.5, rotate: -10 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 180, damping: 14, delay: 0.15 }}
-            className="text-center"
+            className="px-8 text-center"
           >
             <motion.p
               animate={{ rotate: [-3, 3, -3] }}
               transition={{ duration: 0.6, repeat: Infinity }}
-              className="font-display text-7xl font-extrabold uppercase text-party-gradient"
+              className="font-display text-6xl font-extrabold uppercase text-party-gradient md:text-7xl"
             >
               ARREMATOU!! 🎉
             </motion.p>
-            <p className="mt-8 font-hand text-8xl text-cream neon-glow-lime">
-              {winner}
-            </p>
+            <div className="mt-8 flex items-center justify-center gap-4">
+              <span className="text-7xl">{avatar}</span>
+              <p className="font-hand text-7xl text-cream neon-glow-lime md:text-8xl">{winner}</p>
+            </div>
             <div className="mt-8 inline-block rotate-2 rounded-2xl bg-mango px-8 py-4 shadow-pop">
-              <p className="font-display text-5xl font-extrabold text-background" style={{ fontVariantNumeric: "tabular-nums" }}>
+              <p
+                className="font-display text-4xl font-extrabold text-background md:text-5xl"
+                style={{ fontVariantNumeric: "tabular-nums" }}
+              >
                 {formatBRL(amount)}
               </p>
             </div>
-            <p className="mt-6 font-hand text-3xl text-lime">vai pagar agora! 💸</p>
+            <p className="mt-6 font-hand text-2xl text-lime md:text-3xl">paga no PIX! 💸</p>
           </motion.div>
         </motion.div>
       )}
