@@ -14,7 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      auctions: {
+        Row: {
+          created_at: string
+          current_item_id: string | null
+          id: string
+          name: string
+          status: Database["public"]["Enums"]["auction_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_item_id?: string | null
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["auction_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_item_id?: string | null
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["auction_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bids: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          item_id: string
+          participant_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          item_id: string
+          participant_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          item_id?: string
+          participant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bids_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bids_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "participants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      items: {
+        Row: {
+          auction_id: string
+          created_at: string
+          description: string
+          emoji: string
+          id: string
+          image_url: string | null
+          min_increment: number
+          order: number
+          starting_price: number
+          status: Database["public"]["Enums"]["item_status"]
+          title: string
+          updated_at: string
+          winner_bid_id: string | null
+        }
+        Insert: {
+          auction_id: string
+          created_at?: string
+          description?: string
+          emoji?: string
+          id?: string
+          image_url?: string | null
+          min_increment?: number
+          order?: number
+          starting_price?: number
+          status?: Database["public"]["Enums"]["item_status"]
+          title: string
+          updated_at?: string
+          winner_bid_id?: string | null
+        }
+        Update: {
+          auction_id?: string
+          created_at?: string
+          description?: string
+          emoji?: string
+          id?: string
+          image_url?: string | null
+          min_increment?: number
+          order?: number
+          starting_price?: number
+          status?: Database["public"]["Enums"]["item_status"]
+          title?: string
+          updated_at?: string
+          winner_bid_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "items_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      participants: {
+        Row: {
+          avatar: string
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          avatar?: string
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          avatar?: string
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +165,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      auction_status: "DRAFT" | "ACTIVE" | "FINISHED"
+      item_status: "PENDING" | "ACTIVE" | "CLOSED"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +293,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      auction_status: ["DRAFT", "ACTIVE", "FINISHED"],
+      item_status: ["PENDING", "ACTIVE", "CLOSED"],
+    },
   },
 } as const
